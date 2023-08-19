@@ -25,11 +25,21 @@ A robust and scalable RESTful API built with NestJS for managing movies and genr
    ```bash
    npm install
 
-4. **Run the application**:
+## 🛠 Prerequisites
+
+### MongoDB Installation Using Docker
+
+4. **Install Docker**: If you haven't installed Docker, you can download and install it from [Docker's official website](https://www.docker.com/products/docker-desktop).
+
+5. **Run MongoDB in a Docker Container**:
+   
+   ```bash
+   docker run -d -p 27017:27017 --name mongodb mongo
+
+6. **Run the application**:
 
    ```bash
    npm start
-
 
 🌍 The API will be available at [http://localhost:3000](http://localhost:3000).
 
