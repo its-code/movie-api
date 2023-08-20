@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { Movie } from './../schemas/movie.schema';
+import { Movie } from '@schemas/movie.schema';
 import { CreateMovieDto } from './dto/create-movie.dto';
 import { UpdateMovieDto } from './dto/update-movie.dto';
 
@@ -53,9 +53,16 @@ export class MovieService {
    * @returns {Promise<Movie>} A promise that resolves to the updated movie.
    */
   async update(id: string, updateMovieDto: UpdateMovieDto): Promise<Movie> {
-    return await this.movieModel
-      .findByIdAndUpdate(id, updateMovieDto, { new: true })
-      .exec();
+    const movie = await this.movieModel.findById(id).exec();
+
+    // Merge the genres if provided, only unique values
+    if (updateMovieDto.genre) {
+      movie.genre = [...new Set([...movie.genre, ...updateMovieDto.genre])];
+    }
+
+    Object.assign(movie, updateMovieDto);
+    await movie.save();
+    return movie;
   }
 
   /**
