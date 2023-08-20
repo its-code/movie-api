@@ -55,12 +55,13 @@ export class MovieService {
   async update(id: string, updateMovieDto: UpdateMovieDto): Promise<Movie> {
     const movie = await this.movieModel.findById(id).exec();
 
+    Object.assign(movie, updateMovieDto);
+
     // Merge the genres if provided, only unique values
     if (updateMovieDto.genre) {
       movie.genre = [...new Set([...movie.genre, ...updateMovieDto.genre])];
     }
 
-    Object.assign(movie, updateMovieDto);
     await movie.save();
     return movie;
   }
